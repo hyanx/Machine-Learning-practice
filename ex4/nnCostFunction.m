@@ -62,30 +62,41 @@ Theta2_grad = zeros(size(Theta2));
 %               and Theta2_grad from Part 2.
 %
 
+y_matrix = eye(num_labels)(y,:) ;
+a1 = [ones(m, 1) X];
+z2 = a1 * Theta1'  ;
+a2_ = sigmoid(z2);
+a2  = [ones(size(a2_), 1) a2_];
+z3 = a2 * Theta2';
+a3 = sigmoid(z3);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+first_term = -y_matrix' * log(a3);
+second_term = (1 .- y_matrix)' * log(1 .- a3);
+J_ = sum(1/m * diag(first_term - second_term));  % non-regularized J 
+% For check Feedforward and cost function  #1
+Theta1_ = Theta1(:,2:end);    % Theta1 without the first column
+Theta2_ = Theta2(:,2:end);    % Theta2 without the first column
+regularization_term = lambda / (2 * m) * (sum(sum(Theta1_ .* Theta1_)) + sum(sum(Theta2_ .* Theta2_)));
+J = J_ + regularization_term;
+% For check Regularized cost function  #2
 % -------------------------------------------------------------
+d3 = a3 - y_matrix;
+d2 = d3 * Theta2_  .* sigmoidGradient(z2);
+Delta1 = d2' * a1;
+Delta2 = d3' * a2;
+Theta1_grad = 1/m * Delta1;
+Theta2_grad = 1/m * Delta2;
+% For check Neural net gradient function(backpropagation) #4
+% -------------------------------
+Theta1(:,1) = 0;
+Theta2(:,1) = 0;
+Theta1_grad =  Theta1_grad + lambda / m * Theta1;
+Theta2_grad = Theta2_grad + lambda / m * Theta2;
+% For check Regularized gradient #5
 
 % =========================================================================
 
 % Unroll gradients
 grad = [Theta1_grad(:) ; Theta2_grad(:)];
-
 
 end
