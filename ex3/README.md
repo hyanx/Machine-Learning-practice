@@ -1,4 +1,4 @@
-#####Files included in this exercise
+### Files included in this exercise
 - ex3.m - Octave/MATLAB script that steps you through part 1 
 - ex3 nn.m - Octave/MATLAB script that steps you through part 2 
 - ex3data1.mat - Training set of hand-written digits 
